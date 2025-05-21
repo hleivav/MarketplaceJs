@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marketplace</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+  </head>
+  <body>
+    <div class="container mt-4"> <!--the whole container-->
+        <div>
+            <h1 class="text-center fw-bold text-primary">Some charters to Crete</h1>
+
+        </div>
+      <input                     
+        type="text"
+        id="filterInput"
+        class="form-control mb-3"
+        placeholder="Filter advertisements by title..."
+      />
+      <div id="adsContainer" class="row"></div> <!--the container where the ads will be shown dynamically-->
+    </div>
+    <!-- Bootstrap Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white"> <!-- Färgad header -->
+        <h5 class="modal-title" id="detailsModalLabel">Hotel Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body bg-light" id="modalBody"> <!-- Ljus bakgrund -->
+        <!-- Details will be inserted here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <script src="jsfile.js"></script>
+  </body>
+</html>
