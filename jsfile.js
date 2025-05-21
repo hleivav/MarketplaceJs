@@ -11,6 +11,8 @@ const advertisementsData = [
     image: "images/melmar.jpg",
     price: "4 068 SEK",
     contact: "melmar@hotells.com", 
+    pool: true,
+    bar: true,
     details: "Beach: 100 m <br>Shopping: 50 m <br>Pool: Yes <Br>Bar: Yes"
   },
   {
@@ -19,7 +21,9 @@ const advertisementsData = [
     image: "images/broandsister.jpg",
     price: "4 998 SEK",
     contact: "bs@hotells.com", 
-    details: "Beach: 700 m <br>Shopping: 500 m <br>Pool: Yes <Br>Bar: No"
+    pool: false,
+    bar: false,
+    details: "Beach: 700 m <br>Shopping: 500 m <br>Pool: No <Br>Bar: No"
   },
   {
     hotel: "Romantica Crete",
@@ -27,7 +31,9 @@ const advertisementsData = [
     image: "images/romatica.jpg",
     price: "5 068 SEK",
     contact: "romantica@hotells.com", 
-    details: "Beach: 500 m <br>Shopping: 800 m <br>Pool: Yes <Br>Bar: No"
+    pool: true,
+    bar: true,
+    details: "Beach: 500 m <br>Shopping: 800 m <br>Pool: Yes <Br>Bar: Yes"
   },
   {
     hotel: "Kato Stalos Mare",
@@ -35,6 +41,8 @@ const advertisementsData = [
     image: "images/katos.jpg",
     price: "6 137 SEK",
     contact: "mare@hotells.com", 
+    pool: true,
+    bar: true,
     details: "Beach: 400 m <br>Shopping: 500 m <br>Pool: Yes <Br>Bar: Yes"
   },
   {
@@ -43,6 +51,8 @@ const advertisementsData = [
     image: "images/margarita.jpg",
     price: "6 468 SEK",
     contact: "margarita@hotells.com", 
+    pool: true,
+    bar: false,
     details: "Beach: 100 m <br>Shopping: 500 m <br>Pool: Yes <Br>Bar: No"
   },
   {
@@ -51,6 +61,8 @@ const advertisementsData = [
     image: "images/faros.jpg",
     price: "6 698 SEK",
     contact: "nostalgie@hotells.com", 
+    pool: true,
+    bar: true,
     details: "Beach: 50 m <br>Shopping: 50 m <br>Pool: Yes <Br>Bar: Yes"
   },
 ];
@@ -77,12 +89,29 @@ function renderAdvertisements(data) {
         `;
     });
 }
+//Adds listener to the 3 components that filter the results
+document.getElementById("filterInput").addEventListener("input", filterAdvertisements);
+document.getElementById("filterPool").addEventListener("change", filterAdvertisements);
+document.getElementById("filterBar").addEventListener("change", filterAdvertisements);
 
-document.getElementById("filterInput").addEventListener("input", function () { //Event listener that catchs when the user writes in the input field.
-    const searchText = this.value.toLowerCase();
-    const filteredAds = advertisementsData.filter(ad => ad.hotel.toLowerCase().includes(searchText)); // this go through every ad and put it in the new list if the ad includes the text in the input field.
-    renderAdvertisements(filteredAds); // this calls the function that renders the ads but this time the filtered ads.
-});
+
+function filterAdvertisements() {
+  //Gets the value of the 3 listened components and puts them in variables.
+    const searchText = document.getElementById("filterInput").value.toLowerCase();
+    const filterPool = document.getElementById("filterPool").checked;
+    const filterBar = document.getElementById("filterBar").checked;
+
+  // filter the list
+    const filteredAds = advertisementsData.filter(ad => {
+        let matchesSearch = ad.hotel.toLowerCase().includes(searchText);
+        let matchesPool = !filterPool || ad.pool;
+        let matchesBar = !filterBar || ad.bar;
+
+        return matchesSearch && matchesPool && matchesBar;
+    });
+
+    renderAdvertisements(filteredAds);
+}
 
 
 function toggleContact(button, contactInfo) {
@@ -102,6 +131,25 @@ function showDetails(details) {//this function triggers from the details button 
     var detailsModal = new bootstrap.Modal(document.getElementById("detailsModal"));
     detailsModal.show();
 }
+
+let sortAscending = true; // Default: from high to low
+
+document.getElementById("sortButton").addEventListener("click", function () {
+    sortAscending = !sortAscending; // when calling this method the sortAscending changes.
+
+    // Sorts by price
+    advertisementsData.sort((a, b) => {
+        let priceA = parseInt(a.price.replace(/\s/g, ""));
+        let priceB = parseInt(b.price.replace(/\s/g, ""));
+        return sortAscending ? priceA - priceB : priceB - priceA;
+    });
+
+    // if the button text shows ascending, change to descending an vice versa.
+    this.textContent = sortAscending ? "Sort from highest price" : "Sort from lowest price";
+
+    // render the ads by the new sorting order.
+    renderAdvertisements(advertisementsData);
+});
 
 
 
